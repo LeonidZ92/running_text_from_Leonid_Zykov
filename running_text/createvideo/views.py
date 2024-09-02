@@ -14,11 +14,10 @@ def index(request):
 
 
 def create_video(request):
+    # Получаем значение из формы
     text = request.GET.get('text', 'Бегущая строка')
-    acceleration_coeff = request.GET.get('acceleration_coeff', 100)  # Получаем значение из формы
-    acceleration_coeff = int(acceleration_coeff)  # Преобразуем в целое число
-
-    # Получаем цвет текста
+    decelerating_coeff = request.GET.get('decelerating_coeff', 100)
+    decelerating_coeff = int(acceleration_coeff)
     text_color = request.GET.get('text_color', 'yellow')
 
     # Сохранение запроса в базе данных
@@ -26,7 +25,7 @@ def create_video(request):
     user_request.save()
 
     # Изменяем длину видео
-    final_duration = duration + len(text) / acceleration_coeff
+    final_duration = duration + len(text) / decelerating_coeff
 
     # Создаем текстовый клип
     fontsize = height - 10
