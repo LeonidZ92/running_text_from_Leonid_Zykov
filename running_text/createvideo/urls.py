@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import create_video
+from .views import index, create_video
 
 urlpatterns = [
-    path('runtext/', create_video, name='runtext'),
+    path('', index, name='index'),
+    path('create_video/', create_video, name='create_video'),
 ]

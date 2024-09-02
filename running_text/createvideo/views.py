@@ -1,25 +1,36 @@
 import os
 from django.http import HttpResponse
+from django.shortcuts import render
 from moviepy.editor import TextClip, ColorClip, CompositeVideoClip
-
 from .models import UserRequest
-
 
 # Параметры видео
 width, height = 100, 100
 duration = 3
 
 
+def index(request):
+    return render(request, 'index.html')
+
+
 def create_video(request):
     text = request.GET.get('text', 'Бегущая строка')
+    acceleration_coeff = request.GET.get('acceleration_coeff', 100)  # Получаем значение из формы
+    acceleration_coeff = int(acceleration_coeff)  # Преобразуем в целое число
+
+    # Получаем цвет текста
+    text_color = request.GET.get('text_color', 'yellow')
 
     # Сохранение запроса в базе данных
     user_request = UserRequest(text=text)
     user_request.save()
 
+    # Изменяем длину видео
+    final_duration = duration + len(text) / acceleration_coeff
+
     # Создаем текстовый клип
-    fontsize = height - 20
-    text_clip = TextClip(text, fontsize=fontsize, color='yellow', method='label').set_duration(duration)
+    fontsize = height - 10
+    text_clip = TextClip(text, fontsize=fontsize, color=text_color, method='label').set_duration(final_duration)
 
     # Получаем ширину текста
     text_width, _ = text_clip.size
@@ -27,10 +38,12 @@ def create_video(request):
     end_position = -text_width
 
     # Устанавливаем позицию текста
-    text_clip = text_clip.set_position(lambda t: (start_position - (start_position - end_position) * (t / duration), 'center')).set_duration(duration)
+    text_clip = text_clip.set_position(
+        lambda t: (start_position - (start_position - end_position) * (t / final_duration), 'center')
+    ).set_duration(final_duration)
 
     # Создаем фон
-    background_clip = ColorClip(size=(width, height), color=(10, 10, 10)).set_duration(duration)
+    background_clip = ColorClip(size=(width, height), color=(0, 0, 0)).set_duration(final_duration)
 
     # Создаем итоговое видео
     video = CompositeVideoClip([background_clip, text_clip])
