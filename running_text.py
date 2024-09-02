@@ -13,7 +13,7 @@ def create_video():
 
     # Создаем текстовый клип
     fontsize = height - 20
-    text_clip = TextClip(text, fontsize=fontsize, color='white', method='label').set_duration(duration)
+    text_clip = TextClip(text, fontsize=fontsize, color='yellow', method='label').set_duration(duration)
 
     # Получаем ширину текста
     text_width, _ = text_clip.size
@@ -24,7 +24,7 @@ def create_video():
     text_clip = text_clip.set_position(lambda t: (start_position - (start_position - end_position) * (t / duration), 'center')).set_duration(duration)
 
     # Создвим фон
-    background_clip = ColorClip(size=(width, height), color=(0, 0, 0)).set_duration(duration)
+    background_clip = ColorClip(size=(width, height), color=(10, 10, 10)).set_duration(duration)
 
     # Создаем итоговое видео
     video = CompositeVideoClip([background_clip, text_clip])
