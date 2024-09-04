@@ -17,7 +17,7 @@ def create_video(request):
     # Получаем значение из формы
     text = request.GET.get('text', 'Бегущая строка')
     decelerating_coeff = request.GET.get('decelerating_coeff', 100)
-    decelerating_coeff = int(acceleration_coeff)
+    decelerating_coeff = int(decelerating_coeff)
     text_color = request.GET.get('text_color', 'yellow')
 
     # Сохранение запроса в базе данных
