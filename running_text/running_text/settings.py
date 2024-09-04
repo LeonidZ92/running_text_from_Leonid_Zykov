@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.ngrok.io',  # разрешить все поддомены ngrok.io
+    '.ngrok-free.app',  # разрешить все поддомены ngrok.io
 ]
 
 
